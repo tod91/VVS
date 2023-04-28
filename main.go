@@ -1,16 +1,14 @@
 package main
 
 import (
-	"log"
+	"fmt"
 	"net/http"
 )
 
-func mainPage(w http.ResponseWriter, _ *http.Request) {
-	w.Write([]byte("hello there and welcome"))
-}
-
 func main() {
-	http.HandleFunc("/", mainPage)
+	fs := http.FileServer(http.Dir("frontend/build"))
+	http.Handle("/", fs)
 
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	fmt.Println("Server listening on port 8080...")
+	http.ListenAndServe(":8080", nil)
 }
